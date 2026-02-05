@@ -14,8 +14,8 @@ const customColors = {
   primary: '#6750A4', // Deep Purple - Vibe
   secondary: '#625b71',
   tertiary: '#7D5260',
-  background: '#FDFBFF',
-  surface: '#FDFBFF',
+  background: '#f2f2f2', // Light Grey background to make cards pop
+  surface: '#FFFFFF',
   primaryContainer: '#EADDFF',
 };
 
