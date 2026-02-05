@@ -1,24 +1,36 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button, Card, Avatar, useTheme } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
-  return (
-    <View style={styles.container}>
-      <View style={styles.radarContainer}>
-        <Text style={styles.radarText}>Radar Scanning...</Text>
-        {/* Placeholder for Radar Animation */}
-        <View style={styles.radarCircle} />
-      </View>
+  const theme = useTheme();
 
-      <View style={styles.buttonContainer}>
+  return (
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Card style={styles.radarCard}>
+        <Card.Content style={styles.radarContent}>
+          <Text variant="headlineMedium" style={styles.radarTitle}>Scanning Area...</Text>
+          <Text variant="bodyMedium" style={styles.radarSubtitle}>Looking for vibes within 500m</Text>
+
+          <View style={[styles.radarCircle, { borderColor: theme.colors.primary }]}>
+            <Avatar.Icon size={48} icon="radar" style={{ backgroundColor: theme.colors.primaryContainer }} />
+          </View>
+        </Card.Content>
+      </Card>
+
+      <View style={styles.actionContainer}>
         <Button
-          title="Go to Profile"
+          mode="contained-tonal"
+          icon="account"
           onPress={() => navigation.navigate('Profile')}
-        />
+          contentStyle={styles.buttonContent}
+        >
+          My Profile
+        </Button>
       </View>
     </View>
   );
@@ -27,30 +39,38 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    justifyContent: 'space-between',
   },
-  radarContainer: {
-    flex: 1,
+  radarCard: {
+    marginTop: 40,
+    height: 300,
     justifyContent: 'center',
+  },
+  radarContent: {
     alignItems: 'center',
   },
-  radarText: {
-    fontSize: 24,
-    marginBottom: 20,
+  radarTitle: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  radarSubtitle: {
+    marginBottom: 30,
+    opacity: 0.7,
   },
   radarCircle: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     borderWidth: 2,
-    borderColor: '#007AFF',
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderStyle: 'dashed',
   },
-  buttonContainer: {
-    width: '100%',
-    paddingBottom: 40,
+  actionContainer: {
+    marginBottom: 20,
+  },
+  buttonContent: {
+    height: 50,
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { Text, TextInput, Button, Avatar, useTheme } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 
@@ -8,72 +9,84 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 export default function ProfileScreen({ navigation }: Props) {
   const [igId, setIgId] = useState('');
   const [lineId, setLineId] = useState('');
+  const theme = useTheme();
 
   const handleSave = () => {
     console.log('Saved Profile:', { igId, lineId });
-    Alert.alert('Success', 'Profile saved successfully!');
+    Alert.alert('Saved', 'Your vibe profile has been updated!');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Edit Profile</Text>
+    <KeyboardAvoidingView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <View style={styles.content}>
+        <View style={styles.avatarContainer}>
+          <Avatar.Text size={100} label="ME" style={{ backgroundColor: theme.colors.tertiary }} />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Instagram ID</Text>
+        <Text variant="headlineSmall" style={styles.title}>Edit Your Vibe</Text>
+
         <TextInput
-          style={styles.input}
-          placeholder="Enter your IG ID"
+          mode="outlined"
+          label="Instagram ID"
+          placeholder="e.g. your_vibe"
           value={igId}
           onChangeText={setIgId}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Line ID</Text>
-        <TextInput
+          left={<TextInput.Icon icon="instagram" />}
           style={styles.input}
-          placeholder="Enter your Line ID"
+        />
+
+        <TextInput
+          mode="outlined"
+          label="Line ID"
+          placeholder="e.g. line_id"
           value={lineId}
           onChangeText={setLineId}
+          left={<TextInput.Icon icon="chat-processing" />}
+          style={styles.input}
         />
-      </View>
 
-      <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSave} />
+        <Button
+          mode="contained"
+          onPress={handleSave}
+          style={styles.button}
+          contentStyle={styles.buttonContent}
+        >
+          Save Profile
+        </Button>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  content: {
+    flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  inputContainer: {
+  avatarContainer: {
+    alignItems: 'center',
     marginBottom: 20,
   },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: '#333',
+  title: {
+    textAlign: 'center',
+    marginBottom: 30,
+    fontWeight: 'bold',
   },
   input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    fontSize: 16,
+    marginBottom: 15,
   },
-  buttonContainer: {
+  button: {
     marginTop: 20,
+    borderRadius: 8,
+  },
+  buttonContent: {
+    height: 50,
   },
 });
