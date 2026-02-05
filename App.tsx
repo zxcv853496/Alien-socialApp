@@ -5,27 +5,44 @@ import { DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native
 import AppNavigator from './src/navigation/AppNavigator';
 
 // Define Custom Theme (VibeSocial)
-const { LightTheme } = adaptNavigationTheme({ reactNavigationLight: NavigationDefaultTheme });
+const { LightTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  materialLight: DefaultTheme // Explicitly pass MD3 theme to adapter
+});
 
-const theme = {
+const customColors = {
+  primary: '#6750A4', // Deep Purple - Vibe
+  secondary: '#625b71',
+  tertiary: '#7D5260',
+  background: '#FDFBFF',
+  surface: '#FDFBFF',
+  primaryContainer: '#EADDFF',
+};
+
+// Merge for Paper (needs MD3 structure)
+const paperTheme = {
   ...DefaultTheme,
-  ...LightTheme,
   colors: {
     ...DefaultTheme.colors,
-    ...LightTheme.colors,
-    primary: '#6750A4', // Deep Purple - Vibe
-    secondary: '#625b71',
-    tertiary: '#7D5260',
-    background: '#FDFBFF',
-    surface: '#FDFBFF',
-    primaryContainer: '#EADDFF',
+    ...customColors
   },
 };
 
+// Merge for Navigation (needs Navigation structure)
+const navigationTheme = {
+  ...LightTheme,
+  colors: {
+    ...LightTheme.colors,
+    // Map Paper colors to Navigation colors if needed, but LightTheme already does it via adapter
+    background: customColors.background,
+    primary: customColors.primary,
+  }
+}
+
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme as any}>
+    <PaperProvider theme={paperTheme}>
+      <NavigationContainer theme={navigationTheme as any}>
         <AppNavigator />
       </NavigationContainer>
     </PaperProvider>
